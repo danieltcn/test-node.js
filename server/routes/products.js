@@ -1,17 +1,25 @@
 "use strict";
 
 const express = require('express');
-const knex = require('../../knexfile');
-const usersRouter = express.Router();
+// const knex = require('../../knexfile');
+const knex = require('knex')(require('../../knexfile'));
+const productsRouter = express.Router();
 
-// usersRouter.route('/users')
-//     .get('/users', async (req, res) => {
-//         const result = await knex
-//             .select('username')
-//             .from('clients');
-//         res.json({
-//             users: result
-//         });
-//     });
+const productService = require('../services/products.services');
 
-module.exports = usersRouter;
+const { attachPaginate } = require('knex-paginate');
+attachPaginate();
+
+productsRouter.get("/products", (request, response) => {
+    
+    const { page, perPage } = request.query;
+    
+    const products = productService.getProducts( page, perPage );
+
+    products.then(results => {
+        response.json(results);
+    });
+    
+  });
+
+module.exports = productsRouter;

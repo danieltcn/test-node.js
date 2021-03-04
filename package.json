@@ -20,6 +20,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "knex": "^0.21.18",
+    "knex-paginate": "^1.2.3",
     "pg": "^8.5.1"
   }
 }

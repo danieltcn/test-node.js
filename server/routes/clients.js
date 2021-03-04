@@ -6,51 +6,64 @@ const clientsRouter = express.Router();
 const clientsService = require('../services/clients.service');
 
 clientsRouter.route('/clients/:client_id/products/:product_id')
-    .post((request, response) => {
-        const {client_id, product_id} = request.params;
-        
+    .post(async (request, response) => {
+        const { client_id, product_id } = request.params;
+
+        console.log(request.params);
+
         clientsService.postClientProduct(client_id, product_id);
-        
-        response.send(200);
+
+        response.sendStatus(200);
     });
 
-clientsRouter.route('/clients/:clientId/products/:productId')
+clientsRouter.route('/clients/:client_id/products/:product_id')
+    .delete(async (request, response) => {
+        const { client_id, product_id } = request.params;
+
+        clientsService.deleteClientsProduct(client_id, product_id);
+
+        response.sendStatus(200);
+    });
+
+clientsRouter.route('/clients/:client_id/products')
     .get(async (request, response) => {
-        const result = await knex
-            .select('username')
-            .from('clients');
-        response.json({
-            users: result
-        });
+
+        const products = clientsService.getClientProducts(request.params.client_id);
+        
+        products.then(function(result) {
+            console.log(result) ;
+            response.json({
+                result
+            });
+         });
+
     });
 
-// clientsRouter.route('/cliets/:clietsId/products')
-//     .get('/users', async (request, response) => {
-//         const result = await knex
-//             .select('username')
-//             .from('clients');
-//         response.json({
-//             users: result
-//         });
-//     });
+clientsRouter.route('/clients/products/sum')
+    .get( async (request, response) => {
 
-// clientsRouter.route('/clients/products/sum')
-//     .get('/users', async (request, response) => {
-//         const result = await knex
-//             .select('username')
-//             .from('clients');
-//         response.json({
-//             users: result
-//         });
-//     });
+        const clientsProducts = clientsService.getClientsProductsSum();
 
-// clientsRouter.route('/clients/products/count')
-//     .get(async (request, response) => {
-//         const users = await knex('clients')
-//             .where(request.query)
-//             .select('username', 'email');
-//         response.json({ users });
-//     });
+        clientsProducts.then(function(result) {
+            console.log(result) ;
+            response.json({
+                result
+            });
+         });
+
+    });
+
+clientsRouter.route('/clients/products/count')
+    .get(async (request, response) => {
+        const clientsProducts = clientsService.getClientsProductsCount();
+
+        clientsProducts.then(function(result) {
+            console.log(result) ;
+            response.json({
+                result
+            });
+         });
+    });
 
 module.exports = clientsRouter;
 
