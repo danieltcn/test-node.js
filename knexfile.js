@@ -11,9 +11,9 @@ const knex = {
   migrations: {
     directory: `${ __dirname }/db/migrations`
   },
-  // seeds: {
-  //   directory: `${ __dirname }/db/seeds`
-  // }
+  seeds: {
+    directory: `${ __dirname }/db/seeds`
+  }
 };
 
 module.exports = knex;
