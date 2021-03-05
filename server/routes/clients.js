@@ -5,6 +5,7 @@ const knex = require('knex')(require('../../knexfile'));
 const clientsRouter = express.Router();
 const clientsService = require('../services/clients.service');
 
+// add products in order
 clientsRouter.route('/clients/:client_id/products/:product_id')
     .post(async (request, response) => {
         const { client_id, product_id } = request.params;
@@ -16,6 +17,7 @@ clientsRouter.route('/clients/:client_id/products/:product_id')
         response.sendStatus(200);
     });
 
+// delete product by id, for client by id
 clientsRouter.route('/clients/:client_id/products/:product_id')
     .delete(async (request, response) => {
         const { client_id, product_id } = request.params;
@@ -25,6 +27,7 @@ clientsRouter.route('/clients/:client_id/products/:product_id')
         response.sendStatus(200);
     });
 
+//get products by id client
 clientsRouter.route('/clients/:client_id/products')
     .get(async (request, response) => {
 
@@ -39,6 +42,7 @@ clientsRouter.route('/clients/:client_id/products')
 
     });
 
+//get all products and sum 
 clientsRouter.route('/clients/products/sum')
     .get( async (request, response) => {
 
@@ -53,7 +57,8 @@ clientsRouter.route('/clients/products/sum')
 
     });
 
-clientsRouter.route('/clients/products/count')
+//get count of products in orders
+clientsRouter.route('/clients/products/count') 
     .get(async (request, response) => {
         const clientsProducts = clientsService.getClientsProductsCount();
 
